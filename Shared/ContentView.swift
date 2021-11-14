@@ -6,11 +6,35 @@
 //
 
 import SwiftUI
+import Firebase
+import GoogleSignIn
 
 struct ContentView: View {
+    
+    @AppStorage("log_Status") var log_Status = false
+    
     var body: some View {
-        Text("Hello, world!")
-            .padding()
+        if log_Status{
+            
+//            your Home View...
+            
+            NavigationView{
+                VStack(spacing: 15){
+                    Text("Logged In")
+                    
+                    Button("Logout"){
+                        GIDSignIn.sharedInstance.signOut()
+                        try? Auth.auth().signOut()
+                        
+                        withAnimation {
+                            log_Status = false
+                        }
+                    }
+                }
+            }
+        }else{
+            LoginPage()
+        }
     }
 }
 
